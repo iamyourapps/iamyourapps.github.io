@@ -2,7 +2,6 @@ name: Auto Blog Posting Bot
 
 on:
   schedule:
-    # 매일 한국 시간 새벽 1시(UTC 16시)에 알람 울림 (하루 1포스팅 유지!)
     - cron: '0 16 * * *'
   workflow_dispatch:
 
@@ -28,18 +27,23 @@ jobs:
 
     - name: ⏰ 인간화 지연 (실전 모드!)
       run: |
-        echo "실전 모드 돌입: 구글을 완벽하게 속이기 위해 1분 ~ 120분 사이로 랜덤 잠복합니다..."
+        echo "실전 모드 돌입: 구글 눈치를 보며 랜덤 잠복합니다..."
         sleep $((RANDOM % 7200 + 60))
 
-    - name: 🤖 제미나이 봇 작동 및 포스팅 작성
+    - name: 🤖 1호기(성경 앱) 가동
       env:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       run: python3 bot.py
 
-    - name: 🚀 깃허브 서버에 자동 Push
+    - name: 🤖 2호기(급식 앱) 가동
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: python3 bot_lunch.py
+
+    - name: 🚀 깃허브 서버에 쌍끌이 자동 Push
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add .
-        git commit -m "🚀 [자동발행] 새벽에 봇이 은혜로운 글을 발행했습니다!" || echo "No changes to commit"
+        git commit -m "🚀 [자동발행] 새벽에 봇 1호기와 2호기가 쌍끌이 발행을 완료했습니다!" || echo "No changes to commit"
         git push
