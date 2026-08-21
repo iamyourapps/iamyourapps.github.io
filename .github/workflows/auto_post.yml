@@ -27,7 +27,7 @@ jobs:
 
     - name: ⏰ 인간화 지연 (실전 모드)
       run: |
-        echo "구글 알고리즘을 속이기 위해 랜덤 잠복 후 기상합니다..."
+        echo "구글 눈치를 보며 랜덤 잠복 후 기상합니다..."
         sleep $((RANDOM % 7200 + 60))
 
     - name: 🤖 1호기(성경 앱) 가동
@@ -50,10 +50,15 @@ jobs:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       run: python3 bot_converter.py
 
-    - name: 🚀 깃허브 서버에 쿼드코어 Push
+    - name: 🤖 5호기(물타기 계산기) 가동
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: python3 bot_stock.py
+
+    - name: 🚀 깃허브 서버에 5기통 펜타코어 Push
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add .
-        git commit -m "🚀 [자동발행] 새벽에 봇 군단이 4연속 포스팅을 완료했습니다!" || echo "No changes to commit"
+        git commit -m "🚀 [자동발행] 새벽에 봇 군단이 5연속 포스팅을 완료했습니다!" || echo "No changes to commit"
         git push
