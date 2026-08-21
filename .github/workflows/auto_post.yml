@@ -2,10 +2,10 @@ name: Auto Blog Posting Bot
 
 on:
   schedule:
+    # 매일 한국 시간 새벽 1시(UTC 16시)에 알람 울림 (하루 1포스팅 유지!)
     - cron: '0 16 * * *'
   workflow_dispatch:
 
-# 🚨 핵심 추가: 봇에게 저장소에 글을 덮어쓸 수 있는 막강한 권한(Write) 부여!
 permissions:
   contents: write
 
@@ -26,11 +26,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: ⏰ 인간화 지연 (어뷰징 회피용 Jitter)
+    - name: ⏰ 인간화 지연 (실전 모드!)
       run: |
-        echo "봇이 눈치를 보며 랜덤 휴식을 취합니다..."
-        # 테스트를 위해 딜레이를 10초~30초로 확 줄일게! (나중에 다시 늘리면 됨)
-        sleep $((RANDOM % 20 + 10))
+        echo "실전 모드 돌입: 구글을 완벽하게 속이기 위해 1분 ~ 120분 사이로 랜덤 잠복합니다..."
+        sleep $((RANDOM % 7200 + 60))
 
     - name: 🤖 제미나이 봇 작동 및 포스팅 작성
       env:
