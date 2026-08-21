@@ -85,10 +85,15 @@ jobs:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       run: python3 bot_show.py
 
-    - name: 🚀 깃허브 서버에 11기통 Push
+    - name: 🤖 12호기(사진 압축) 가동
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: python3 bot_pixel.py
+
+    - name: 🚀 깃허브 서버에 12기통 Push
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add .
-        git commit -m "🚀 [자동발행] 새벽에 봇 군단이 11연속 포스팅을 완료했습니다!" || echo "No changes to commit"
+        git commit -m "🚀 [자동발행] 새벽에 봇 군단이 12연속 포스팅을 완료했습니다!" || echo "No changes to commit"
         git push
