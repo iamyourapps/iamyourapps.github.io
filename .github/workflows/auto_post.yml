@@ -45,10 +45,15 @@ jobs:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       run: python3 bot_timer.py
 
-    - name: 🚀 깃허브 서버에 트리플 Push
+    - name: 🤖 4호기(단위변환기 앱) 가동
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: python3 bot_converter.py
+
+    - name: 🚀 깃허브 서버에 쿼드코어 Push
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add .
-        git commit -m "🚀 [자동발행] 새벽에 봇 군단이 트리플 포스팅을 완료했습니다!" || echo "No changes to commit"
+        git commit -m "🚀 [자동발행] 새벽에 봇 군단이 4연속 포스팅을 완료했습니다!" || echo "No changes to commit"
         git push
