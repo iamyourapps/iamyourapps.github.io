@@ -25,75 +25,37 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: ⏰ 인간화 지연 (실전 모드)
-      run: |
-        echo "구글 알고리즘을 속이기 위해 랜덤 잠복 후 기상합니다..."
-        sleep $((RANDOM % 7200 + 60))
-
-    - name: 🤖 1호기(성경 앱) 가동
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: python3 bot.py
-
-    - name: 🤖 2호기(급식 앱) 가동
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: python3 bot_lunch.py
-
-    - name: 🤖 3호기(핏타이머 앱) 가동
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: python3 bot_timer.py
-
-    - name: 🤖 4호기(단위변환기 앱) 가동
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: python3 bot_converter.py
-
-    - name: 🤖 5호기(물타기 계산기) 가동
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: python3 bot_stock.py
-
-    - name: 🤖 6호기(복약 알림) 가동
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: python3 bot_medication.py
-
-    - name: 🤖 7호기(LED 전광판) 가동
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: python3 bot_led.py
-
-    - name: 🤖 8호기(QR 스캐너) 가동
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: python3 bot_scanner.py
-
-    - name: 🤖 9호기(도서 스캐너) 가동
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: python3 bot_pdf.py
-
-    - name: 🤖 10호기(의약품 검색) 가동
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: python3 bot_drug.py
-
-    - name: 🤖 11호기(공연 정보) 가동
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: python3 bot_show.py
-
-    - name: 🤖 12호기(사진 압축) 가동
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      run: python3 bot_pixel.py
-
-    - name: 🚀 깃허브 서버에 12기통 Push
+    - name: ⚙️ 깃허브 봇 계정 팩트 장착
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add .
-        git commit -m "🚀 [자동발행] 새벽에 봇 군단이 12연속 포스팅을 완료했습니다!" || echo "No changes to commit"
-        git push
+
+    - name: ⏰ 인간화 지연 (실전 모드)
+      run: |
+        echo "구글 알고리즘을 속이기 위해 랜덤 잠복 후 기상합니다..."
+        sleep $((RANDOM % 1800 + 60))
+
+    - name: 🤖 12기통 봇 순차 가동 (10분 간격)
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: |
+        # 12개의 봇을 차례대로 배열에 담기
+        bots=("bot.py" "bot_lunch.py" "bot_timer.py" "bot_converter.py" "bot_stock.py" "bot_medication.py" "bot_led.py" "bot_scanner.py" "bot_pdf.py" "bot_drug.py" "bot_show.py" "bot_pixel.py")
+        
+        for bot in "${bots[@]}"; do
+          echo "========================================"
+          echo "🚀 [$bot] 가동 시작..."
+          python3 $bot
+          
+          # 글 하나 완성할 때마다 즉시 서버에 쏘아 올리기
+          git add .
+          git commit -m "🚀 [자동발행] $bot 포스팅 완료" || echo "변경 사항 없음"
+          git pull --rebase || true
+          git push
+          
+          # 마지막 봇(bot_pixel.py)이 아니면 다음 글까지 10분(600초) 대기!
+          if [ "$bot" != "bot_pixel.py" ]; then
+            echo "⏳ 사람처럼 보이기 위해 10분(600초)간 커피 한잔 마시고 옵니다..."
+            sleep 600
+          fi
+        done
