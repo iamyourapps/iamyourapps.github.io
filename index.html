@@ -1,19 +1,20 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 🚨 앱스 공장 구글 서치 콘솔 소유권 확인 코드 -->
-    <meta name="google-site-verification" content="sst8of3FHN27nnUDwNrPGW-W9vfRc5iVC2rzHa5RUXE" />
-    <title>앱스 공장 - 유용한 꿀팁 저장소</title>
-    <style>
-        body { font-family: 'Pretendard', sans-serif; text-align: center; padding: 50px; background-color: #f0f4f8; color: #333; }
-        h1 { font-size: 3em; margin-bottom: 10px; color: #2c3e50; }
-        p { font-size: 1.2em; color: #7f8c8d; }
-    </style>
-</head>
-<body>
-    <h1>🚀 12기통 앱스 공장 풀가동 중</h1>
-    <p>매일 업데이트되는 유용한 앱 정보와 생활 꿀팁을 기대해 주세요.</p>
-</body>
-</html>
+---
+layout: default
+---
+
+<div style="text-align: center; padding: 50px 0;">
+  <h1>🚀 12기통 앱스 공장 풀가동 중</h1>
+  <p>매일 업데이트되는 유용한 앱 정보와 생활 꿀팁을 기대해 주세요.</p>
+</div>
+
+<hr>
+
+<h2>📚 최신 앱 포스팅 목록</h2>
+<ul>
+  {% for post in site.posts %}
+    <li style="margin-bottom: 10px;">
+      <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> 
+      <span style="color: gray; font-size: 0.8em;">({{ post.date | date: "%Y-%m-%d" }})</span>
+    </li>
+  {% endfor %}
+</ul>
